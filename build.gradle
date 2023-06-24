@@ -9,7 +9,7 @@ plugins {
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+# targetCompatibility = '1.8'
 
 repositories {
 	maven { url 'https://repo.spring.io/release' }
@@ -30,7 +30,7 @@ test {
 
 sonarqube {
     properties {  
-        property 'sonar.host.url', 'http://3.91.200.90/9000/'  
+        property 'sonar.host.url', 'http://3.92.201.106/9000/'  
         property 'sonar.login', 'squ_1d83655d6edb24cd15ff173686f5a72dd536e044'
     }
 }
