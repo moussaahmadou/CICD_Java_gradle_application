@@ -7,6 +7,9 @@ metadata:
   labels:
     {{- include "myapp.labels" . | nindent 4 }}
 spec:
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
