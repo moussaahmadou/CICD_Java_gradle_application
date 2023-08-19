@@ -19,10 +19,10 @@ pipeline{
                 script{
                     withCredentials([string(credentialsId: 'docker_pass', variable: 'docker_password')]) {
                             sh '''
-                                docker build -t 18.208.155.129:8083/springapp:${VERSION} .
-                                docker login -u admin -p admin 18.208.155.129:8083 
-                                docker push  18.208.155.129:8083/springapp:${VERSION}
-                                docker rmi 18.208.155.129:8083/springapp:${VERSION}   
+                                docker build -t 44.211.173.230:8083/springapp:${VERSION} .
+                                docker login -u admin -p admin 44.211.173.230:8083 
+                                docker push  44.211.173.230:8083/springapp:${VERSION}
+                                docker rmi 44.211.173.230:8083/springapp:${VERSION}   
                             ''' 
                     } 
                 }
@@ -47,7 +47,7 @@ pipeline{
                              sh '''
                                  helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
                                  tar -czvf  myapp-${helmversion}.tgz myapp/
-                                 curl -u admin:$docker_password http://18.208.155.129:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+                                 curl -u admin:$docker_password http://44.211.173.230:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
                             '''
                           }
                     }
@@ -59,7 +59,7 @@ pipeline{
                script{
                    withCredentials([kubeconfigContent(credentialsId: 'kubernetes-config1', variable: 'KUBECONFIG_CONTENT')]){
                         dir('kubernetes/') {
-                          sh 'helm upgrade --install --set image.repository="18.208.155.129:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ ' 
+                          sh 'helm upgrade --install --set image.repository="44.211.173.230:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ ' 
                         }
                     }
                }
