@@ -11,8 +11,6 @@ spec:
       {{- include "myapp.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      annotations:
-        securityContext.seccompProfile: "docker/default"
       labels:
         {{- include "myapp.selectorLabels" . | nindent 8 }}
     spec:
@@ -22,14 +20,6 @@ spec:
         - name: {{ .Chart.Name }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           command: ["/bin/sh"]
-          securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              runAsNonRoot: true
-              seccompProfile:
-                type: RuntimeDefault
-              capabilities:
-                drop: ["NET_RAW"]
           args: ["-c","sh /usr/local/tomcat/bin/startup.sh;while true; do echo hello; sleep 10;done"]
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
