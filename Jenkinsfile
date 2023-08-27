@@ -19,10 +19,10 @@ pipeline{
                 script{
                     withCredentials([string(credentialsId: 'docker_pass', variable: 'docker_password')]) {
                             sh '''
-                                docker build -t 52.205.255.30:8083/springapp:${VERSION} .
-                                docker login -u admin -p admin 52.205.255.30:8083 
-                                docker push  52.205.255.30:8083/springapp:${VERSION}
-                                docker rmi 52.205.255.30:8083/springapp:${VERSION}   
+                                docker build -t 3.80.208.220:8083/springapp:${VERSION} .
+                                docker login -u admin -p admin 3.80.208.220:8083 
+                                docker push 3.80.208.220:8083/springapp:${VERSION}
+                                docker rmi 3.80.208.220:8083/springapp:${VERSION}   
                             ''' 
                     } 
                 }
@@ -47,7 +47,7 @@ pipeline{
                              sh '''
                                  helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
                                  tar -czvf  myapp-${helmversion}.tgz myapp/
-                                 curl -u admin:$docker_password http://52.205.255.30:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+                                 curl -u admin:$docker_password http://3.80.208.220:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
                             '''
                           }
                     }
@@ -59,7 +59,7 @@ pipeline{
                script{
                    withCredentials([file(credentialsId: 'kubernetes-config', variable: 'KUBECONFIG')]){
                         dir('kubernetes/') {
-                          sh 'helm upgrade --install --set image.repository="52.205.255.30:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ ' 
+                          sh 'helm upgrade --install --set image.repository="3.80.208.220:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ ' 
                         }
                     }
                }
